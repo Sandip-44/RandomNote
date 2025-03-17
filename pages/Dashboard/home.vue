@@ -16,13 +16,17 @@ const onSearch = (searchValue) => {
   console.log("use value", searchValue);
   console.log("or use this.value", value.value);
 };
+
+const showForm = (formDetails) => {
+  console.log("hello i am from form", formDetails);
+};
 </script>
 
 <template>
   <section>
     <a-row style="margin: 50px">
       <a-col :span="4" :offset="2">
-        <a-button width="100px">New note</a-button>
+        <a-button width="100px" @click="showForm">New note</a-button>
       </a-col>
       <a-col :md="8">
         <a-input-search

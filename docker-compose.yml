@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  nuxt-app:
+    container_name: nuxt-app
+    build:
+      context: . # Build the Dockerfile in the current directory
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000" # Map port 3000 on the host to port 3000 in the container
+    environment:
+      - NODE_ENV=production # Set the environment to production
+    restart: unless-stopped # Automatically restart the container if it stops
+    volumes:
+      - .:/app # Mount the current directory to /app in the container
+      - /app/node_modules # Ensure node_modules is not overwritten by the volume
