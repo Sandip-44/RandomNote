@@ -2,7 +2,7 @@
 FROM node:16
 
 # Set the working directory inside the container
-WORKDIR /pages/index
+WORKDIR /usr/src/app
 
 # Copy package.json and package-lock.json
 COPY package*.json ./
