@@ -1,23 +1,36 @@
-# Use the official Node.js image as the base image
-FROM node:16
 
-# Set the working directory inside the container
+# Build stage
+FROM node:20-alpine as builder
+
 WORKDIR /app
 
-# Copy package.json and package-lock.json
+# Copy package files
 COPY package*.json ./
 
 # Install dependencies
 RUN npm install
 
-# Copy the rest of the application code
+# Copy the rest of the application
 COPY . .
 
-# Build the Nuxt.js application
+# Build the application
 RUN npm run build
 
-# Expose the port Nuxt.js runs on (default is 3000)
+# Production stage
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Copy built assets from builder
+COPY --from=builder /app/.output /app/.output
+
+# Expose the port the app runs on
 EXPOSE 3000
 
-# Start the Nuxt.js application
-CMD ["npm", "start"]
+# Set environment variables
+ENV HOST=0.0.0.0
+ENV PORT=3000
+ENV NODE_ENV=production
+
+# Start the application
+CMD ["node", ".output/server/index.mjs"]
