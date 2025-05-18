@@ -1,25 +1,37 @@
-# Use Node.js LTS base image
-FROM node:18-alpine
 
-# Set working directory
+# Build stage
+FROM node:20-alpine as builder
+
 WORKDIR /app
 
-# Install dependencies first for caching
-COPY package*.json ./
+# Copy package files
+COPY package.json package-lock.json ./
+
+
+# Install dependencies
 RUN npm install
 
-# Copy the rest of the code
+# Copy the rest of the application
 COPY . .
 
-# Build Nuxt (will generate .output folder for Nitro)
+# Build the application
 RUN npm run build
 
-# Expose port 80 (we'll run Nuxt on it)
-EXPOSE 80
+# Production stage
+FROM node:20-alpine
 
-# Tell Nuxt to listen on 0.0.0.0:80
-ENV NUXT_PORT=80
-ENV NUXT_HOST=0.0.0.0
+WORKDIR /app
 
-# Start the Nuxt Nitro server
+# Copy built assets from builder
+COPY --from=builder /app/.output /app/.output
+
+# Expose the port the app runs on
+EXPOSE 3000
+
+# Set environment variables
+ENV HOST=0.0.0.0
+ENV PORT=3000
+ENV NODE_ENV=production
+
+# Start the application
 CMD ["node", ".output/server/index.mjs"]
