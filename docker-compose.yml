@@ -6,11 +6,18 @@
 #       - "3000:3000"
 #     environment:
 #       - NODE_ENV=production # Add any env vars your app needs
+# version: "3"
+# services:
+#   randomnote:
+#     image: sandipbudhathoki/randomnote:2 # ← Use the correct image version
+#     ports:
+#       - "8889:3000" # ← Make sure this port is free on your server
+#     environment:
+#       - NODE_ENV=production
 version: "3"
 services:
   randomnote:
-    image: sandipbudhathoki/randomnote:2 # ← Use the correct image version
+    build:
+      context: https://github.com/yourusername/your-repo-name.git
     ports:
-      - "8889:3000" # ← Make sure this port is free on your server
-    environment:
-      - NODE_ENV=production
+      - "8889:3000"
