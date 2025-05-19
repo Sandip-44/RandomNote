@@ -14,10 +14,18 @@
 #       - "8889:3000" # ← Make sure this port is free on your server
 #     environment:
 #       - NODE_ENV=production
-version: "3"
+# version: "3"
+# services:
+#   randomnote:
+#     build:
+#       context: https://github.com/yourusername/your-repo-name.git
+#     ports:
+#       - "8889:3000"
+version: "3.8"
 services:
   randomnote:
     build:
-      context: https://github.com/yourusername/your-repo-name.git
+      context: .
+      dockerfile: Dockerfile
     ports:
-      - "8889:3000"
+      - "8888:3000"
